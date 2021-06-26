@@ -65,6 +65,7 @@ main > ul {
 main > ul li {
     margin: 3vh;
     width: max-content;
+    min-width: 10vw;
     padding: 2% 10px 2% 10px;
     background: var(--btnBackground);
     color: var(--mainTextColor);
