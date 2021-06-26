@@ -1,5 +1,6 @@
 :root{
-    --btnColors: #5865f2;
+    --btnBackground: #5865f2;
+    --btnBackgroundHover: #4752c4;
     --mainBackground: #36393f;
     --mainTextColor: #ffffff;
     --secondaryBackground: #4f545c;
@@ -22,7 +23,7 @@ header {
 }
 
 header a {
-    color: var(--btnColors);
+    color: var(--btnBackground);
 }
 
 main {
@@ -45,16 +46,37 @@ main > p {
     font-size: 125%;
 }
 
-main > ul li,
 main > button {
     margin: 3vh;
     width: max-content;
     padding: 0 10px 0 10px;
-    background-color: var(--btnColors);
+    background: var(--btnBackground);
     color: var(--mainTextColor);
     border: 0;
     border-radius: 7px; /* round corners */
     font-size: 150%;
+}
+
+main > ul {
+    align-self: flex-start;
+    margin-left: 15%;
+}
+
+main > ul li {
+    margin: 3vh;
+    width: max-content;
+    padding: 2% 10px 2% 10px;
+    background: var(--btnBackground);
+    color: var(--mainTextColor);
+    border: 0;
+    border-radius: 7px; /* round corners */
+    font-size: 150%;
+}
+
+main > button:hover,
+main > ul li:hover {
+    background: var(--btnBackgroundHover);
+    cursor: pointer;
 }
 
 footer {

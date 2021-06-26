@@ -1,5 +1,7 @@
 //html elements
-
+startBtn = document.querySelector("#startBtn"); //button that only shows on start
+timerTag = document.querySelector("#timerTag"); //span containing timer numbers
+answerButtonLst = document.body.querySelector("ul"); //list that will hold the answer elements
 
 //global variables
 questionObj = { //question object that holds all the parts of questions
@@ -13,10 +15,18 @@ questionObj = { //question object that holds all the parts of questions
     ]
 }
 
-function init() {
+function startGame() {
+    startBtn.style.display = "none"; //hide start button when game starts
+}
+
+function endGame() {
 
 }
 
+function init() {
+}
+
+startBtn.addEventListener("click", startGame);
 init();
 
 /*
