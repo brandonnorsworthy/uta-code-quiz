@@ -22,7 +22,7 @@ header {
     height: 100%;
 }
 
-header a {
+header button {
     text-decoration: none;
     background: var(--btnBackground);
     color: var(--mainTextColor);
@@ -83,7 +83,8 @@ main > ul li {
     font-size: 150%;
 }
 
-main > button:hover,
+header button:hover,
+main > button:hover, /* all buttons have same hover effect so reuse code :) */
 main > ul li:hover {
     background: var(--btnBackgroundHover);
     cursor: pointer;
