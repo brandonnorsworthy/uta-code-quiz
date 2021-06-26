@@ -9,7 +9,7 @@
 body {
     position: relative;
     margin: 0.5rem;
-    min-height: 95vh;
+    min-height: 98vh;
     background: var(--mainBackground);
     color: var(--mainTextColor);
 }
@@ -23,7 +23,16 @@ header {
 }
 
 header a {
-    color: var(--btnBackground);
+    text-decoration: none;
+    background: var(--btnBackground);
+    color: var(--mainTextColor);
+    border: 0;
+    border-radius: 7px; /* round corners */
+    padding: 3px 10px 3px 10px;
+}
+
+header p {
+    padding: 3px 10px 3px 10px; /* add same padding as highscores so looks cleaner */
 }
 
 main {

@@ -33,6 +33,9 @@ function showQuestions() {
 //when called will iterate to the next question and show the next question content
 function nextQuestion() {
     questionIndexNumber++; //increment our index by 1 so we can keep track
+    if (questionIndexNumber >= questionObj.questions.length){ //if we run out of questions end the game
+        endGame();
+    }
     showQuestions();
 }
 
@@ -42,13 +45,15 @@ function createAnswerElements(questionIndex) {
     for (let answerIndex = 0; answerIndex < questionObj.answers[questionIndex].length; answerIndex++) {//loop over every answer and create a list item on the page
         var currentAnswerListItem = document.createElement(`li`);
         var tempStr = questionObj.answers[questionIndex][answerIndex];
+
         //if the string contains `correct:` pull it out and set it as id so they cant see it be we know the correct
         if (questionObj.answers[questionIndex][answerIndex].includes(`correct:`)){
             tempStr = questionObj.answers[questionIndex][answerIndex].substring(8, questionObj.answers[questionIndex][answerIndex].length); //yoink out the string part that doesnt contain the word correct
-            currentAnswerListItem.id = `correct`;
+            currentAnswerListItem.id = `correct`; //tag correct answer with an id to look at later
         }
-        currentAnswerListItem.textContent = tempStr;
-        document.body.querySelector(`ul`).appendChild(currentAnswerListItem);
+
+        currentAnswerListItem.textContent = tempStr; //set textcontent as tempStr because if couldve changed if it was the correct answer
+        document.body.querySelector(`ul`).appendChild(currentAnswerListItem); //adds this answer list item to the unordered list in html
     }
 }
 
@@ -58,7 +63,6 @@ function checkAnswer(event) {
         return; //if target is just the list itself do nothing only want the list items
     }
 
-    console.log(event.target, event.target.id); 
     if (event.target.id.includes('correct:')){ //check target id to see if its the correct answer
         //correct answer do nothing
     } else {
@@ -81,13 +85,3 @@ function init() {
 }
 
 init();
-
-/*
-1. list of questions with answers
-2. test input against answer
-3a.show new question with its own answers
-3. add timer
-4. if out of questions game over
-5. if timer 0 game over
-5. if correct do nothing if incorrect subtract time
-*/
