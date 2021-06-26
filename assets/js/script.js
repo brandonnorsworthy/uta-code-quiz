@@ -1,4 +1,13 @@
-
+questionObj = {
+    questions: [`click yes`, `click no`, `first answer`, `answers of question 1 and question 2`],
+    correctAnswer: [`yes`, `no`, `incorrect`, `yes no`],
+    answers: [ //answers are in a 2d array because multiple answers for 1 questions
+        [`no`, `no`, `yes`, `no`],
+        [`no`, `yes`, `maybe`, `click this`],
+        [`incorrect`, `maybe`, `yes`, `😀`],
+        [`no yes`, `yes no`, `wawawewa`, `no no`]
+    ]
+}
 
 function init() {
 
