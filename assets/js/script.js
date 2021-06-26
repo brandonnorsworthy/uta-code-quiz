@@ -23,15 +23,22 @@ function startGame() {
     //start timer
 }
 
+//uses the current question index to show the next question and its answers
 function showQuestions() {
-
     //loop over every possible question that was added
-    document.body.querySelector("h1").textContent = questionObj.questions[questionIndexNumber];
-    createAnswerElements(questionIndexNumber);
-
+    document.body.querySelector("h1").textContent = questionObj.questions[questionIndexNumber]; //select h1 tag and set it as the question
+    createAnswerElements(questionIndexNumber); //create answers for current question
 }
 
+//when called will iterate to the next question and show the next question content
+function nextQuestion() {
+    questionIndexNumber++; //increment our index by 1 so we can keep track
+    showQuestions();
+}
+
+//creates new answer elements in the list will clear out previous answers
 function createAnswerElements(questionIndex) {
+    answerButtonLst.innerHTML = ''; //clears out all current answers
     for (let answerIndex = 0; answerIndex < questionObj.answers[questionIndex].length; answerIndex++) {
         //loop over every answer and create a list item on the page
         var currentAnswerListItem = document.createElement("li");
@@ -47,6 +54,7 @@ function endGame() {
 function init() {
 }
 
+document.addEventListener("keydown", nextQuestion);
 startBtn.addEventListener("click", startGame);
 init();
 
