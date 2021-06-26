@@ -3,8 +3,9 @@ Timed coding quiz with multiple-choice questions. This app will run in the brows
 
 
 
-I WANT to take a timed quiz on JavaScript fundamentals that stores high scores  
 
+## Criteria
+I WANT to take a timed quiz on JavaScript fundamentals that stores high scores  
 
 WHEN I click the start button  
 THEN a timer starts and I am presented with a question  
@@ -17,3 +18,10 @@ THEN the game is over
 WHEN the game is over  
 THEN I can save my initials and my score  
 
+## css todolist & js kinda
+
+1. dynamic li's are aligned left slightly pushed in from header  
+2. once game starts p tag hidden  
+3. h1 tag becomes question  
+4. p tag under the list to display "Correct" or "Wrong!"  
+5. on hover of answers highlights button and cursor changes  

@@ -33,7 +33,7 @@ main {
     padding: 5vh 15vw 5vh 15vw;
 }
 
-main h1 {
+main > h1 {
     margin: 3vh;
     font-size: 200%;
     text-align: center;
@@ -45,6 +45,7 @@ main > p {
     font-size: 125%;
 }
 
+main > ul li,
 main > button {
     margin: 3vh;
     width: max-content;
