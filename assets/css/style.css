@@ -1,18 +1,65 @@
-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+:root{
+    --btnColors: #5865f2;
+    --mainBackground: #36393f;
+    --mainTextColor: #ffffff;
+    --secondaryBackground: #4f545c;
 }
 
 body {
+    position: relative;
     margin: 0.5rem;
-    background: rgb(78, 78, 78);
+    min-height: 95vh;
+    background: var(--mainBackground);
+    color: var(--mainTextColor);
 }
 
-body div {
+header {
+    display: flex;
+    align-content: space-between;
+    justify-content: space-between;
     width: 100%;
+    height: 100%;
 }
 
-.align-right {
-    justify-content: flex-end;
+header a {
+    color: var(--btnColors);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 5vh 15vw 5vh 15vw;
+}
+
+main h1 {
+    margin: 3vh;
+    font-size: 200%;
+    text-align: center;
+}
+
+main > p {
+    padding: 0 15% 0 15%;
+    text-align: center;
+    font-size: 125%;
+}
+
+main > button {
+    margin: 3vh;
+    width: max-content;
+    padding: 0 10px 0 10px;
+    background-color: var(--btnColors);
+    color: var(--mainTextColor);
+    border: 0;
+    border-radius: 7px; /* round corners */
+    font-size: 150%;
+}
+
+footer {
+    position: absolute;
+    height: 5vh;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
 }
