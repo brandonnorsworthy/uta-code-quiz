@@ -2,7 +2,7 @@
 var timerTag = document.querySelector(`#timerTag`); //span containing timer numbers
 var highscoreBtn = document.querySelector(`#highscoreBtn`); //submit button that shows at end of game
 var answerButtonLst = document.body.querySelector(`ul`); //list that will hold the answer elements
-var timerText = document.querySelector(`#timerTag`);
+var timerPTag  = document.querySelector(`header`).children[1]
 
 //global variables
 var questionObj = { //question object that holds all the parts of questions
@@ -25,6 +25,8 @@ function startGame() {
     //when game starts clean up the main area
     document.querySelector(`#startBtn`).style.display = `none`; //hide start button when game starts
     document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
+    timerPTag.style.display = `block`;
+
     //start generating questions
     answerButtonLst.style.display = ``;
 
@@ -78,6 +80,7 @@ function checkAnswer(event) {
         //correct answer do nothing
     } else {
         //wrong answer dummy minus 10 seconds off timer
+        timeLeft -= 10;
     }
 
     nextQuestion(); //go to next question after an answer has been clicked can only choose one answer per question
@@ -113,13 +116,11 @@ function storeScoreAndName() {
 function startTimer() {
     var timerInterval = setInterval(function() {
         timeLeft--;
-        timerText.textContent = timeLeft;
+        timerTag.textContent = timeLeft;
         if(timeLeft === 0) {
-            // Stops execution of action at set interval
             clearInterval(timerInterval);
-            // Calls function to create and append image
-            sendMessage();
-          }
+            endGame();
+        }
     }, 1000);
 }
 
@@ -132,6 +133,7 @@ function setUpGame() {
 }
 
 function init() {
+    timerPTag.style.display = `none`;
     answerButtonLst.addEventListener(`click`, checkAnswer);
     highscoreBtn.addEventListener(`click`, storeScoreAndName);
     startBtn.addEventListener(`click`, startGame);
