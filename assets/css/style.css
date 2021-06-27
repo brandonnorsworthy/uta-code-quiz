@@ -22,6 +22,7 @@ header {
     height: 100%;
 }
 
+#highscore-input-div > button,
 header button {
     text-decoration: none;
     background: var(--btnBackground);
@@ -43,12 +44,13 @@ main {
     padding: 5vh 15vw 5vh 15vw;
 }
 
-main > h1 {
+main h1 {
     margin: 3vh;
     font-size: 200%;
     text-align: center;
 }
 
+main > div,
 main > #instructions {
     padding: 0 15% 0 15%;
     text-align: center;
@@ -84,9 +86,15 @@ main > ul li {
 }
 
 main > div {
-    border-bottom: 2px solid var(--secondaryBackground);
+    justify-content: flex-start;
+    display: none;
 }
 
+main > div > * {
+    margin: 1rem;
+}
+
+#highscore-input-div > button:hover,
 header button:hover,
 main > button:hover, /* all buttons have same hover effect so reuse code :) */
 main > ul li:hover {
@@ -100,6 +108,24 @@ footer {
     width: 100%;
     bottom: 0;
     text-align: center;
+}
+
+#highscore-input-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#highscore-input-div > *{
+    margin: 0.5rem;
+}
+
+#highscore-input-div > p {
+    display: inline;
+}
+
+#highscore-input-div > input {
+    width:30%;
 }
 
 #popInMessage {

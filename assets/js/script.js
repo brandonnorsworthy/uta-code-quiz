@@ -1,5 +1,6 @@
 //html elements
 timerTag = document.querySelector(`#timerTag`); //span containing timer numbers
+highscoreBtn = document.querySelector(`#highscoreBtn`); //submit button that shows at end of game
 answerButtonLst = document.body.querySelector(`ul`); //list that will hold the answer elements
 
 //global variables
@@ -13,9 +14,11 @@ questionObj = { //question object that holds all the parts of questions
     ]
 }
 var questionIndexNumber = 0;
+var score = 0;
 
 function startGame() {
     questionIndexNumber = 0;
+    score = 0;
     //when game starts clean up the main area
     document.querySelector(`#startBtn`).style.display = `none`; //hide start button when game starts
     document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
@@ -38,6 +41,7 @@ function nextQuestion() {
     questionIndexNumber++; //increment our index by 1 so we can keep track
     if (questionIndexNumber >= questionObj.questions.length){ //if we run out of questions end the game
         endGame();
+        return;
     }
     showQuestions();
 }
@@ -78,23 +82,41 @@ function checkAnswer(event) {
 
 function endGame() {
     answerButtonLst.innerHTML = ``;
-    document.querySelector(`#title`).style.display = `Coding Quiz Challenge`;
+    document.querySelector(`#title`).style.display = `none`;
+    document.querySelector(`#highscore-div`).style.display = `block`;
     return;
+}
+
+function storeScoreAndName() {
+    highscoreTextbox = document.querySelector(`input`);
+    console.log(highscoreTextbox.value);
+    if(window.localStorage.getItem(`highscores`) == null) {
+        console.log('making new object');
+        tempObject = {
+            highscores: [
+                [highscoreTextbox.value, score]
+            ]
+        }
+        window.localStorage.setItem(`highscores`, JSON.stringify(tempObject));
+    } else {
+        tempObject = JSON.parse(window.localStorage.getItem(`highscores`));
+        console.log(tempObject);
+        tempObject.highscores.concat([highscoreTextbox.value, score]);
+        console5
+    }
 }
 
 function setUpGame() {
     document.querySelector(`#title`).textContent = `Coding Quiz Challenge`;
     document.querySelector(`#instructions`).style.display = `block`; //hide instructions beneath h1 tag
     document.querySelector(`#startBtn`).style.display = `block`; //hide start button when game starts
+    document.querySelector(`#highscore-div`).style.display = `none`;
     answerButtonLst.innerHTML = ``;
 }
 
-function testMethod() {
-}
-
 function init() {
-    document.addEventListener(`keydown`, setUpGame);
     answerButtonLst.addEventListener(`click`, checkAnswer);
+    highscoreBtn.addEventListener(`click`, storeScoreAndName);
     startBtn.addEventListener(`click`, startGame);
     setUpGame();
     return;
