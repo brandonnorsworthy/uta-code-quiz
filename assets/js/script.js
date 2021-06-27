@@ -1,10 +1,11 @@
 //html elements
-timerTag = document.querySelector(`#timerTag`); //span containing timer numbers
-highscoreBtn = document.querySelector(`#highscoreBtn`); //submit button that shows at end of game
-answerButtonLst = document.body.querySelector(`ul`); //list that will hold the answer elements
+var timerTag = document.querySelector(`#timerTag`); //span containing timer numbers
+var highscoreBtn = document.querySelector(`#highscoreBtn`); //submit button that shows at end of game
+var answerButtonLst = document.body.querySelector(`ul`); //list that will hold the answer elements
+var timerText = document.querySelector(`#timerTag`);
 
 //global variables
-questionObj = { //question object that holds all the parts of questions
+var questionObj = { //question object that holds all the parts of questions
     questions: [`click yes`, `click no`, `first answer`, `answers of question 1 and question 2`],
     answers: [ //answers are in a 2d array because multiple answers for 1 questions
         [`no`, `no`, `correct:yes`, `no`],
@@ -13,7 +14,9 @@ questionObj = { //question object that holds all the parts of questions
         [`no yes`, `correct:yes no`, `wawawewa`, `no no`] //to pull out correct: newStr = substring(7,questionObj.answers[index].length)
     ]
 }
+
 var questionIndexNumber = 0;
+var timeLeft = 99;
 var score = 0;
 
 function startGame() {
@@ -25,6 +28,7 @@ function startGame() {
     //start generating questions
     answerButtonLst.style.display = ``;
 
+    startTimer();
     showQuestions();
     //start timer
 }
@@ -104,6 +108,19 @@ function storeScoreAndName() {
         tempObject.highscores.concat([highscoreTextbox.value, score]);
         console5
     }
+}
+
+function startTimer() {
+    var timerInterval = setInterval(function() {
+        timeLeft--;
+        timerText.textContent = timeLeft;
+        if(timeLeft === 0) {
+            // Stops execution of action at set interval
+            clearInterval(timerInterval);
+            // Calls function to create and append image
+            sendMessage();
+          }
+    }, 1000);
 }
 
 function setUpGame() {
