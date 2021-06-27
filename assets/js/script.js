@@ -29,7 +29,7 @@ function startGame() {
 //uses the current question index to show the next question and its answers
 function showQuestions() {
     //loop over every possible question that was added
-    document.body.querySelector(`h1`).textContent = questionObj.questions[questionIndexNumber]; //select h1 tag and set it as the question
+    document.querySelector(`#title`).textContent = questionObj.questions[questionIndexNumber]; //select h1 tag and set it as the question
     createAnswerElements(questionIndexNumber); //create answers for current question
 }
 
@@ -77,12 +77,13 @@ function checkAnswer(event) {
 }
 
 function endGame() {
-    answerButtonLst.style.display = `none`;
+    answerButtonLst.innerHTML = ``;
+    document.querySelector(`#title`).style.display = `Coding Quiz Challenge`;
     return;
 }
 
 function setUpGame() {
-    document.body.querySelector(`h1`).textContent = `Coding Quiz Challenge`
+    document.querySelector(`#title`).textContent = `Coding Quiz Challenge`;
     document.querySelector(`#instructions`).style.display = `block`; //hide instructions beneath h1 tag
     document.querySelector(`#startBtn`).style.display = `block`; //hide start button when game starts
     answerButtonLst.innerHTML = ``;

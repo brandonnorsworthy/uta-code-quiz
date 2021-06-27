@@ -83,6 +83,10 @@ main > ul li {
     font-size: 150%;
 }
 
+main > div {
+    border-bottom: 2px solid var(--secondaryBackground);
+}
+
 header button:hover,
 main > button:hover, /* all buttons have same hover effect so reuse code :) */
 main > ul li:hover {
