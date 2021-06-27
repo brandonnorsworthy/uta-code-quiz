@@ -18,10 +18,12 @@ var questionObj = { //question object that holds all the parts of questions
 var questionIndexNumber = 0;
 var timeLeft = 99;
 var score = 0;
+var gameEnded = true;
 
 function startGame() {
     questionIndexNumber = 0;
     score = 0;
+    gameEnded = false;
     //when game starts clean up the main area
     document.querySelector(`#startBtn`).style.display = `none`; //hide start button when game starts
     document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
@@ -88,33 +90,38 @@ function checkAnswer(event) {
 }
 
 function endGame() {
+    gameEnded = true;
+    score = timeLeft;
     answerButtonLst.innerHTML = ``;
-    document.querySelector(`#title`).style.display = `none`;
+    timerPTag.style.display = `none`; //hide timer on end screen
+    document.querySelector(`#scoreSpan`).textContent = score;
+    document.querySelector(`#title`).style.display = `none`; //hide title h1
     document.querySelector(`#highscore-div`).style.display = `block`;
     return;
 }
 
 function storeScoreAndName() {
     highscoreTextbox = document.querySelector(`input`);
-    console.log(highscoreTextbox.value);
-    if(window.localStorage.getItem(`highscores`) == null) {
-        console.log('making new object');
+
+    if(window.localStorage.getItem(`highscores`) == null) { //if no data exsists create a object
         tempObject = {
-            highscores: [
-                [highscoreTextbox.value, score]
-            ]
+            names: [highscoreTextbox.value],
+            scores: [score],
         }
         window.localStorage.setItem(`highscores`, JSON.stringify(tempObject));
     } else {
         tempObject = JSON.parse(window.localStorage.getItem(`highscores`));
         console.log(tempObject);
         tempObject.highscores.concat([highscoreTextbox.value, score]);
-        console5
     }
 }
 
 function startTimer() {
     var timerInterval = setInterval(function() {
+        if(gameEnded === true){
+            clearInterval(timerInterval);
+            return
+        }
         timeLeft--;
         timerTag.textContent = timeLeft;
         if(timeLeft === 0) {
@@ -133,7 +140,7 @@ function setUpGame() {
 }
 
 function init() {
-    timerPTag.style.display = `none`;
+    timerPTag.style.display = `none`; //hide timer on start screen
     answerButtonLst.addEventListener(`click`, checkAnswer);
     highscoreBtn.addEventListener(`click`, storeScoreAndName);
     startBtn.addEventListener(`click`, startGame);
