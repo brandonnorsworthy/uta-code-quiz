@@ -12,13 +12,16 @@ questionObj = { //question object that holds all the parts of questions
         [`no yes`, `correct:yes no`, `wawawewa`, `no no`] //to pull out correct: newStr = substring(7,questionObj.answers[index].length)
     ]
 }
-questionIndexNumber = 0;
+var questionIndexNumber = 0;
 
 function startGame() {
+    questionIndexNumber = 0;
     //when game starts clean up the main area
     document.querySelector(`#startBtn`).style.display = `none`; //hide start button when game starts
     document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
     //start generating questions
+    answerButtonLst.style.display = ``;
+
     showQuestions();
     //start timer
 }
@@ -74,13 +77,25 @@ function checkAnswer(event) {
 }
 
 function endGame() {
+    answerButtonLst.style.display = `none`;
     return;
 }
 
+function setUpGame() {
+    document.body.querySelector(`h1`).textContent = `Coding Quiz Challenge`
+    document.querySelector(`#instructions`).style.display = `block`; //hide instructions beneath h1 tag
+    document.querySelector(`#startBtn`).style.display = `block`; //hide start button when game starts
+    answerButtonLst.innerHTML = ``;
+}
+
+function testMethod() {
+}
+
 function init() {
-    document.addEventListener(`keydown`, nextQuestion);
+    document.addEventListener(`keydown`, setUpGame);
     answerButtonLst.addEventListener(`click`, checkAnswer);
     startBtn.addEventListener(`click`, startGame);
+    setUpGame();
     return;
 }
 
