@@ -78,7 +78,7 @@ function checkAnswer(event) {
         return; //if target is just the list itself do nothing only want the list items
     }
 
-    if (event.target.id.includes('correct:')){ //check target id to see if its the correct answer
+    if (event.target.id.includes('correct')){ //check target id to see if its the correct answer
         //correct answer do nothing
     } else {
         //wrong answer dummy minus 10 seconds off timer
@@ -96,24 +96,54 @@ function endGame() {
     timerPTag.style.display = `none`; //hide timer on end screen
     document.querySelector(`#scoreSpan`).textContent = score;
     document.querySelector(`#title`).style.display = `none`; //hide title h1
-    document.querySelector(`#highscore-div`).style.display = `block`;
+    document.querySelector(`#submit-highscore-div`).style.display = `block`;
     return;
 }
 
 function storeScoreAndName() {
-    highscoreTextbox = document.querySelector(`input`);
+    var highscoreTextbox = document.querySelector(`input`);
+    var tempArrayOfObjects = [];
+
+    var tempObject = {
+        names: highscoreTextbox.value,
+        scores: score,
+    }
 
     if(window.localStorage.getItem(`highscores`) == null) { //if no data exsists create a object
-        tempObject = {
-            names: [highscoreTextbox.value],
-            scores: [score],
-        }
-        window.localStorage.setItem(`highscores`, JSON.stringify(tempObject));
+
+        tempArrayOfObjects.push(tempObject);
+        window.localStorage.setItem(`highscores`, JSON.stringify(tempArrayOfObjects));
     } else {
-        tempObject = JSON.parse(window.localStorage.getItem(`highscores`));
-        console.log(tempObject);
-        tempObject.highscores.concat([highscoreTextbox.value, score]);
+        tempArrayOfObjects = JSON.parse(window.localStorage.getItem(`highscores`));
+        for (let index = 0; index <= tempArrayOfObjects.length; index++) {
+
+            if (index == tempArrayOfObjects.length) {
+                tempArrayOfObjects.push(tempObject)
+                break;
+            } else if (tempArrayOfObjects[index].scores < score) {
+                tempArrayOfObjects.splice(index, 0, tempObject);
+                break;
+            }
+        }
+        window.localStorage.setItem(`highscores`, JSON.stringify(tempArrayOfObjects))
     }
+
+    showHighscores();
+}
+
+function showHighscores() {
+    document.querySelector(`#submit-highscore-div`).style.display = `none`;
+
+}
+
+
+
+function showSubmitHighscore() {
+    answerButtonLst.innerHTML = ``;
+    timerPTag.style.display = `none`; //hide timer on end screen
+    document.querySelector(`#scoreSpan`).textContent = score;
+    document.querySelector(`#title`).style.display = `none`; //hide title h1
+    document.querySelector(`#submit-highscore-div`).style.display = `block`;
 }
 
 function startTimer() {
@@ -135,7 +165,7 @@ function setUpGame() {
     document.querySelector(`#title`).textContent = `Coding Quiz Challenge`;
     document.querySelector(`#instructions`).style.display = `block`; //hide instructions beneath h1 tag
     document.querySelector(`#startBtn`).style.display = `block`; //hide start button when game starts
-    document.querySelector(`#highscore-div`).style.display = `none`;
+    document.querySelector(`#submit-highscore-div`).style.display = `none`;
     answerButtonLst.innerHTML = ``;
 }
 
