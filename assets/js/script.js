@@ -2,7 +2,11 @@
 var timerTag = document.querySelector(`#timerTag`); //span containing timer numbers
 var highscoreBtn = document.querySelector(`#highscoreBtn`); //submit button that shows at end of game
 var answerButtonLst = document.body.querySelector(`ul`); //list that will hold the answer elements
-var timerPTag  = document.querySelector(`header`).children[1]
+var timerPTag  = document.querySelector(`header`).children[1];
+var goBackBtn = document.querySelector(`#goBackBtn`);
+var viewHighscoresBtn = document.querySelector(`#viewHighscoresBtn`);
+var clearHighscoreBtn = document.querySelector(`#clearHighscoreBtn`);
+var startBtn = document.querySelector(`#startBtn`);
 
 //global variables
 var questionObj = { //question object that holds all the parts of questions
@@ -25,6 +29,7 @@ function startGame() {
     score = 0;
     gameEnded = false;
     //when game starts clean up the main area
+    viewHighscoresBtn.style.display = `none`
     document.querySelector(`#startBtn`).style.display = `none`; //hide start button when game starts
     document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
     timerPTag.style.display = `block`;
@@ -35,6 +40,7 @@ function startGame() {
     startTimer();
     showQuestions();
     //start timer
+    return;
 }
 
 //uses the current question index to show the next question and its answers
@@ -42,6 +48,7 @@ function showQuestions() {
     //loop over every possible question that was added
     document.querySelector(`#title`).textContent = questionObj.questions[questionIndexNumber]; //select h1 tag and set it as the question
     createAnswerElements(questionIndexNumber); //create answers for current question
+    return;
 }
 
 //when called will iterate to the next question and show the next question content
@@ -70,6 +77,7 @@ function createAnswerElements(questionIndex) {
         currentAnswerListItem.textContent = tempStr; //set textcontent as tempStr because if couldve changed if it was the correct answer
         document.body.querySelector(`ul`).appendChild(currentAnswerListItem); //adds this answer list item to the unordered list in html
     }
+    return;
 }
 
 //checks the answer clicked on for correct answer
@@ -104,6 +112,10 @@ function storeScoreAndName() {
     var highscoreTextbox = document.querySelector(`input`);
     var tempArrayOfObjects = [];
 
+    if (highscoreTextbox.value === `` || highscoreTextbox.value === null) {
+        return;
+    }
+
     var tempObject = {
         names: highscoreTextbox.value,
         scores: score,
@@ -127,23 +139,29 @@ function storeScoreAndName() {
         }
         window.localStorage.setItem(`highscores`, JSON.stringify(tempArrayOfObjects))
     }
-
+    document.querySelector(`input`).value = ``;
     showHighscores();
 }
 
 function showHighscores() {
     document.querySelector(`#submit-highscore-div`).style.display = `none`;
+    document.querySelector(`header`).children[0].style.display = `none`;
+    document.querySelector(`#display-highscore-div`).style.display = `block`;
 
+    tempOrderedList = document.querySelector(`ol`);
+    tempOrderedList.innerHTML = ``
+    tempArrayOfObjects = JSON.parse(window.localStorage.getItem(`highscores`));
+    for (let index = 0; index < tempArrayOfObjects.length; index++) {
+        var newLi = document.createElement(`li`)
+        newLi.textContent = tempArrayOfObjects[index].names + ` - ` + tempArrayOfObjects[index].scores;
+        tempOrderedList.appendChild(newLi);
+    }
 }
 
-
-
-function showSubmitHighscore() {
-    answerButtonLst.innerHTML = ``;
-    timerPTag.style.display = `none`; //hide timer on end screen
-    document.querySelector(`#scoreSpan`).textContent = score;
-    document.querySelector(`#title`).style.display = `none`; //hide title h1
-    document.querySelector(`#submit-highscore-div`).style.display = `block`;
+function clearHighscores() {
+    document.querySelector(`ol`).innerHTML = ``;
+    window.localStorage.clear();
+    setUpGame();
 }
 
 function startTimer() {
@@ -162,17 +180,26 @@ function startTimer() {
 }
 
 function setUpGame() {
+    timeLeft = 99;
+    viewHighscoresBtn.style.display = `block`
+    document.querySelector(`#title`).style.display = `block`
+    document.querySelector(`#display-highscore-div`).style.display = `none`;
     document.querySelector(`#title`).textContent = `Coding Quiz Challenge`;
     document.querySelector(`#instructions`).style.display = `block`; //hide instructions beneath h1 tag
     document.querySelector(`#startBtn`).style.display = `block`; //hide start button when game starts
     document.querySelector(`#submit-highscore-div`).style.display = `none`;
     answerButtonLst.innerHTML = ``;
+    return;
+
 }
 
 function init() {
     timerPTag.style.display = `none`; //hide timer on start screen
     answerButtonLst.addEventListener(`click`, checkAnswer);
     highscoreBtn.addEventListener(`click`, storeScoreAndName);
+    clearHighscoreBtn.addEventListener(`click`, clearHighscores);
+    viewHighscoresBtn.addEventListener(`click`, showHighscores);
+    goBackBtn.addEventListener(`click`, setUpGame);
     startBtn.addEventListener(`click`, startGame);
     setUpGame();
     return;

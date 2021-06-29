@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <button>View Highscores</button>
+        <button id="viewHighscoresBtn">View Highscores</button>
         <p>Time: <span id="timerTag">99</span></p>
     </header>
     <main> <!-- container holding questions and stuff -->
@@ -21,7 +21,7 @@
         <ul>
             <!-- dynamically fill this with list items containing answers -->
         </ul>
-        <p id="popInMessage">Wrong!</p>
+        <!-- <p id="popInMessage">Wrong!</p> -->
         <div id="submit-highscore-div">
             <h1>All Done!</h1>
             <p>Your final score is <span id="scoreSpan">999</span>.</p>
@@ -32,11 +32,11 @@
             </div>
         </div>
         <div id="display-highscore-div">
-            <h1>Highsscores</h1>
+            <h1>Highscores</h1>
             <ol>
                 <li>1. wwww</li>
             </ol>
-            <button>Go Back</button><button>Clear Highscores</button>
+            <button id="goBackBtn">Go Back</button><button id="clearHighscoreBtn">Clear Highscores</button>
         </div>
     </main>
     <footer>
