@@ -52,7 +52,7 @@ main h1 {
 }
 
 main > div,
-main > #instructions {
+#instructions {
     padding: 0 15% 0 15%;
     text-align: center;
     font-size: 125%;
@@ -127,8 +127,4 @@ footer {
 
 #highscore-input-div > input {
     width:30%;
-}
-
-#popInMessage {
-    color:var(--mainBackground);
 }
