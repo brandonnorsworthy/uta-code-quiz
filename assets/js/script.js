@@ -7,6 +7,7 @@ var clearHighscoreBtn = document.querySelector(`#clearHighscoreBtn`); //button i
 var answerButtonLst = document.body.querySelector(`ul`); //list that will hold the dynamic answer list items
 var goBackHighscoreBtn = document.querySelector(`#goBackBtn`); //go back button in the highscore view
 var startBtn = document.querySelector(`#startBtn`); //button you first see when the page loads (starts game)
+var titleTag = document.querySelector(`#title`) //h1 tag that gets used almost entire time for questions and titles
 
 //question and answer object with arrays
 var questionObj = { //question object that holds all the parts of questions
@@ -26,25 +27,30 @@ var questionObj = { //question object that holds all the parts of questions
     ] //to denote a correct answer simply add prefix `correct:` onto the correct string.
 }
 
-//global variables
+var globalTimerPreset = 70; // game presets to be easily accessed for balancing
+
+//global quiz/game variables
 var questionIndexNumber = 0; //keeps track of the current question number for question object
-var timeLeft = 99; //globl time left variable
+var timeLeft = globalTimerPreset; //globl time left variable
 var score = 0; //score that gets calculated at end of the game
 var gameEnded = true; //boolean helps some functions know if game has already ended as well as timer.
 
 //intial setup for the game shows all the "main menu" type items like instructions and start button
 function setUpGame() {
-    timeLeft = 99; //reset the time back to 99 seconds so reusable to reset game
-    viewHighscoresBtn.style.display = `block`; //default view highscores button is hidden
-    document.querySelector(`#title`).textContent = `Coding Quiz Challenge`; //this h1 tag gets reused for questions so make sure its reset
-
-    //display items that are needed for the "main menu"
-    document.querySelector(`#title`).style.display = `block`; //show the quiz title because after 1 round it will be hidden
-    document.querySelector(`#instructions`).style.display = `block`; //show instructions under h1 tag
-    startBtn.style.display = `block`; //show the start button
+    timeLeft = globalTimerPreset; //reset the time back to 99 seconds so reusable to reset game
 
     //hide elements that may be visible after a previous round
     document.querySelector(`#display-highscore-div`).style.display = `none`; //this would be the last visible item after viewing highscore of a previous game
+
+    //fills back content that gets reused for quiz questions
+    titleTag.textContent = `Coding Quiz Challenge`; //this h1 tag gets reused for questions so make sure its reset
+
+    //display items that are needed for the "main menu"
+    titleTag.style.display = `block`; //show the quiz title because after 1 round it will be hidden
+    document.querySelector(`#instructions`).style.display = `block`; //show instructions under h1 tag
+    viewHighscoresBtn.style.display = `block`; //default view highscores button is hidden after coming from highscores of previous round
+    startBtn.style.display = `block`; //show the start button
+
     return;
 }
 
@@ -52,26 +58,64 @@ function setUpGame() {
 function startGame() {
     gameEnded = false; //when game starts set gameEnded back to false
 
-    //when game starts clean up the main tag
+    //when game starts clean up the main div
     viewHighscoresBtn.style.display = `none` //if game is in progress because being timed no stopping to view highscores sorry focus up!
     startBtn.style.display = `none`; //hide start button when game starts
-    document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
-    timerPTag.style.display = `block`;
+    document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag (not used in questions)
+    timerPTag.style.display = `block`; //display timer at the top now that game started
 
-    //start generating questions
-    answerButtonLst.style.display = ``;
+    //functions that create the user experience
+    showQuestions(); //start generating the questions
+    startTimer(); //make sure all formatting gets sorted out before timing the user
 
-    startTimer();
-    showQuestions();
-    //start timer
     return;
 }
 
-//uses the current question index to show the next question and its answers
+//timer interval that runs while user takes quiz
+function startTimer() {
+    var timerInterval = setInterval(function() {
+        if(gameEnded === true) { //test if game ended before anything incase needs to be stopped
+            clearInterval(timerInterval); //stop
+            return;
+        }
+        if(timeLeft < 1) { //if timer is out under 1 cause wrong answers subtract 10 seconds game ends and timer stops
+            clearInterval(timerInterval); //stop
+            endGame(); //end game out of time scenario
+        }
+
+        timerTag.textContent = timeLeft; //update timer tag to latest time
+        timeLeft--; //decrement timer after all code runs
+    }, 1000); //1 second intervals
+
+    return;
+}
+
+//uses the questionIndexNumber to show the question of the current index and its answers
 function showQuestions() {
-    //loop over every possible question that was added
-    document.querySelector(`#title`).textContent = questionObj.questions[questionIndexNumber]; //select h1 tag and set it as the question
-    createAnswerElements(questionIndexNumber); //create answers for current question
+    titleTag.textContent = questionObj.questions[questionIndexNumber]; //select h1 tag and set it as the question
+    createAnswerElements(); //create answers for current question
+
+    return;
+}
+
+//creates new answer elements in the answer list will clear out previous answers
+function createAnswerElements() {
+    answerButtonLst.innerHTML = ''; //clears out all current answers for new epic round of answers to be dynamically loaded! Wow so epic if you ever read this please tell me there are so many comments
+
+    for (let answerIndex = 0; answerIndex < questionObj.answers[questionIndexNumber].length; answerIndex++) { //loop over every answer (for current question) and create a list item on the page based on that content
+        var currentAnswerListItem = document.createElement(`li`); //new list item
+        var tempStr = questionObj.answers[questionIndexNumber][answerIndex]; //temp incase the string contains the `correct` answer tag and needs to be pulled out.
+
+        //if the string contains `correct:` pull it out and set it as id so they cant see it on the <button>/<li>
+        if (questionObj.answers[questionIndexNumber][answerIndex].includes(`correct:`)){
+            tempStr = questionObj.answers[questionIndexNumber][answerIndex].substring(8, questionObj.answers[questionIndexNumber][answerIndex].length); //yoink out the string part that doesnt contain `correct:`
+            currentAnswerListItem.id = `correct`; //tag correct answer with an id to look at later and see if they clicked the right one.
+        }
+
+        currentAnswerListItem.textContent = tempStr; //temp incase the string contains the `correct` answer tag and needs to be pulled out.
+        answerButtonLst.appendChild(currentAnswerListItem); //adds this answer list item to the unordered list in html
+    }
+
     return;
 }
 
@@ -85,24 +129,6 @@ function nextQuestion() {
     showQuestions();
 }
 
-//creates new answer elements in the list will clear out previous answers
-function createAnswerElements(questionIndex) {
-    answerButtonLst.innerHTML = ''; //clears out all current answers
-    for (let answerIndex = 0; answerIndex < questionObj.answers[questionIndex].length; answerIndex++) {//loop over every answer and create a list item on the page
-        var currentAnswerListItem = document.createElement(`li`);
-        var tempStr = questionObj.answers[questionIndex][answerIndex];
-
-        //if the string contains `correct:` pull it out and set it as id so they cant see it be we know the correct
-        if (questionObj.answers[questionIndex][answerIndex].includes(`correct:`)){
-            tempStr = questionObj.answers[questionIndex][answerIndex].substring(8, questionObj.answers[questionIndex][answerIndex].length); //yoink out the string part that doesnt contain the word correct
-            currentAnswerListItem.id = `correct`; //tag correct answer with an id to look at later
-        }
-
-        currentAnswerListItem.textContent = tempStr; //set textcontent as tempStr because if couldve changed if it was the correct answer
-        document.body.querySelector(`ul`).appendChild(currentAnswerListItem); //adds this answer list item to the unordered list in html
-    }
-    return;
-}
 
 //checks the answer clicked on for correct answer
 function checkAnswer(event) {
@@ -122,7 +148,7 @@ function checkAnswer(event) {
 }
 
 function endGame() {
-    answerButtonLst.innerHTML = ``; //clear out the 
+    answerButtonLst.innerHTML = ``; //clear out the
     questionIndexNumber = 0;
 
     gameEnded = true;
@@ -130,7 +156,7 @@ function endGame() {
     answerButtonLst.innerHTML = ``;
     timerPTag.style.display = `none`; //hide timer on end screen
     document.querySelector(`#scoreSpan`).textContent = score;
-    document.querySelector(`#title`).style.display = `none`; //hide title h1
+    titleTag.style.display = `none`; //hide title h1
     document.querySelector(`#submit-highscore-div`).style.display = `block`;
     return;
 }
@@ -172,7 +198,7 @@ function storeScoreAndName() {
 }
 
 function showHighscores() {
-    document.querySelector(`#title`).style.display = `none`;
+    titleTag.style.display = `none`;
     document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
     document.querySelector(`#startBtn`).style.display = `none`; //hide start button when game starts
     document.querySelector(`#submit-highscore-div`).style.display = `none`;
@@ -202,20 +228,6 @@ function clearHighscores() {
     setUpGame();
 }
 
-function startTimer() {
-    var timerInterval = setInterval(function() {
-        if(gameEnded === true){
-            clearInterval(timerInterval);
-            return
-        }
-        timeLeft--;
-        timerTag.textContent = timeLeft;
-        if(timeLeft < 1) {
-            clearInterval(timerInterval);
-            endGame();
-        }
-    }, 1000);
-}
 
 
 function init() {
