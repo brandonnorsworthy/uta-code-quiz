@@ -144,6 +144,9 @@ function storeScoreAndName() {
 }
 
 function showHighscores() {
+    document.querySelector(`#title`).style.display = `none`;
+    document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
+    document.querySelector(`#startBtn`).style.display = `none`; //hide start button when game starts
     document.querySelector(`#submit-highscore-div`).style.display = `none`;
     document.querySelector(`header`).children[0].style.display = `none`;
     document.querySelector(`#display-highscore-div`).style.display = `block`;
@@ -151,9 +154,16 @@ function showHighscores() {
     tempOrderedList = document.querySelector(`ol`);
     tempOrderedList.innerHTML = ``
     tempArrayOfObjects = JSON.parse(window.localStorage.getItem(`highscores`));
-    for (let index = 0; index < tempArrayOfObjects.length; index++) {
-        var newLi = document.createElement(`li`)
-        newLi.textContent = tempArrayOfObjects[index].names + ` - ` + tempArrayOfObjects[index].scores;
+
+    if (tempArrayOfObjects != null) {
+        for (let index = 0; index < tempArrayOfObjects.length; index++) {
+            var newLi = document.createElement(`li`)
+            newLi.textContent = tempArrayOfObjects[index].names + ` - ` + tempArrayOfObjects[index].scores;
+            tempOrderedList.appendChild(newLi);
+        }
+    } else {
+        var newLi = document.createElement(`p`)
+        newLi.textContent = `No Highscores`
         tempOrderedList.appendChild(newLi);
     }
 }
