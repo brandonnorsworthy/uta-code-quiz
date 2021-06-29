@@ -1,16 +1,16 @@
-//html elements
-var timerTag = document.querySelector(`#timerTag`); //span containing timer numbers
-var highscoreBtn = document.querySelector(`#highscoreBtn`); //submit button that shows at end of game
-var answerButtonLst = document.body.querySelector(`ul`); //list that will hold the answer elements
-var timerPTag  = document.querySelector(`header`).children[1];
-var goBackBtn = document.querySelector(`#goBackBtn`);
-var viewHighscoresBtn = document.querySelector(`#viewHighscoresBtn`);
-var clearHighscoreBtn = document.querySelector(`#clearHighscoreBtn`);
-var startBtn = document.querySelector(`#startBtn`);
+//html elements that frequently get grabbed
+var timerTag = document.querySelector(`#timerTag`); //span containing timer numbers inside the paragraph tag at the top (numbers only)
+var timerPTag  = document.querySelector(`header`).children[1]; //paragraph tag at the top of the screen in the nav area that displays time
+var highscoreBtn = document.querySelector(`#highscoreBtn`); //submit button that shows at end of game to submit name
+var viewHighscoresBtn = document.querySelector(`#viewHighscoresBtn`); //view highscore button at the front page of the quiz game
+var clearHighscoreBtn = document.querySelector(`#clearHighscoreBtn`); //button in the highscore view that clears all local storage
+var answerButtonLst = document.body.querySelector(`ul`); //list that will hold the dynamic answer list items
+var goBackHighscoreBtn = document.querySelector(`#goBackBtn`); //go back button in the highscore view
+var startBtn = document.querySelector(`#startBtn`); //button you first see when the page loads (starts game)
 
-//global variables
+//question and answer object with arrays
 var questionObj = { //question object that holds all the parts of questions
-    questions: [
+    questions: [ //questions can just be added to by adding on a string to end of array
         `Inside which HTML element do we put the JavaScript?`, 
         `What is the correct JavaScript syntax to change the content of the HTML element below? <p id="demo">This is a demonstration.</p>`, 
         `Where is the correct place to insert a JavaScript?`, 
@@ -23,21 +23,38 @@ var questionObj = { //question object that holds all the parts of questions
         [`The <head> section`, `Both the <head> section and the <body> section are correct`, `correct:The <body> section`, `The <footer> section`], //uses `correct:` so that even if answer has the word `correct` its not flagged as correct answer
         [`correct:<script src="xxx.js">`, `<script name="xxx.js">`, `<script href="xxx.js">`, `<script link="xxx.js">`],
         [`msgBox("Hello World");`, `alertBox("Hello World");`, `correct:alert("Hello World");`, `msg("Hello World");`] //to pull out correct: newStr = substring(7,questionObj.answers[index].length)
-    ]
+    ] //to denote a correct answer simply add prefix `correct:` onto the correct string.
 }
 
-var questionIndexNumber = 0;
-var timeLeft = 99;
-var score = 0;
-var gameEnded = true;
+//global variables
+var questionIndexNumber = 0; //keeps track of the current question number for question object
+var timeLeft = 99; //globl time left variable
+var score = 0; //score that gets calculated at end of the game
+var gameEnded = true; //boolean helps some functions know if game has already ended as well as timer.
 
+//intial setup for the game shows all the "main menu" type items like instructions and start button
+function setUpGame() {
+    timeLeft = 99; //reset the time back to 99 seconds so reusable to reset game
+    viewHighscoresBtn.style.display = `block`; //default view highscores button is hidden
+    document.querySelector(`#title`).textContent = `Coding Quiz Challenge`; //this h1 tag gets reused for questions so make sure its reset
+
+    //display items that are needed for the "main menu"
+    document.querySelector(`#title`).style.display = `block`; //show the quiz title because after 1 round it will be hidden
+    document.querySelector(`#instructions`).style.display = `block`; //show instructions under h1 tag
+    startBtn.style.display = `block`; //show the start button
+
+    //hide elements that may be visible after a previous round
+    document.querySelector(`#display-highscore-div`).style.display = `none`; //this would be the last visible item after viewing highscore of a previous game
+    return;
+}
+
+//gets triggered if the start button at "main menu" gets clicked
 function startGame() {
-    questionIndexNumber = 0;
-    score = 0;
-    gameEnded = false;
-    //when game starts clean up the main area
-    viewHighscoresBtn.style.display = `none`
-    document.querySelector(`#startBtn`).style.display = `none`; //hide start button when game starts
+    gameEnded = false; //when game starts set gameEnded back to false
+
+    //when game starts clean up the main tag
+    viewHighscoresBtn.style.display = `none` //if game is in progress because being timed no stopping to view highscores sorry focus up!
+    startBtn.style.display = `none`; //hide start button when game starts
     document.querySelector(`#instructions`).style.display = `none`; //hide instructions beneath h1 tag
     timerPTag.style.display = `block`;
 
@@ -105,6 +122,9 @@ function checkAnswer(event) {
 }
 
 function endGame() {
+    answerButtonLst.innerHTML = ``; //clear out the 
+    questionIndexNumber = 0;
+
     gameEnded = true;
     score = timeLeft;
     answerButtonLst.innerHTML = ``;
@@ -147,6 +167,7 @@ function storeScoreAndName() {
         window.localStorage.setItem(`highscores`, JSON.stringify(tempArrayOfObjects))
     }
     document.querySelector(`input`).value = ``;
+    score = 0;
     showHighscores();
 }
 
@@ -196,19 +217,6 @@ function startTimer() {
     }, 1000);
 }
 
-function setUpGame() {
-    timeLeft = 99;
-    viewHighscoresBtn.style.display = `block`
-    document.querySelector(`#title`).style.display = `block`
-    document.querySelector(`#display-highscore-div`).style.display = `none`;
-    document.querySelector(`#title`).textContent = `Coding Quiz Challenge`;
-    document.querySelector(`#instructions`).style.display = `block`; //hide instructions beneath h1 tag
-    document.querySelector(`#startBtn`).style.display = `block`; //hide start button when game starts
-    document.querySelector(`#submit-highscore-div`).style.display = `none`;
-    answerButtonLst.innerHTML = ``;
-    return;
-
-}
 
 function init() {
     timerPTag.style.display = `none`; //hide timer on start screen
@@ -216,7 +224,7 @@ function init() {
     highscoreBtn.addEventListener(`click`, storeScoreAndName);
     clearHighscoreBtn.addEventListener(`click`, clearHighscores);
     viewHighscoresBtn.addEventListener(`click`, showHighscores);
-    goBackBtn.addEventListener(`click`, setUpGame);
+    goBackHighscoreBtn.addEventListener(`click`, setUpGame);
     startBtn.addEventListener(`click`, startGame);
     setUpGame();
     return;
