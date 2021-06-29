@@ -189,7 +189,7 @@ function startTimer() {
         }
         timeLeft--;
         timerTag.textContent = timeLeft;
-        if(timeLeft === 0) {
+        if(timeLeft < 1) {
             clearInterval(timerInterval);
             endGame();
         }
