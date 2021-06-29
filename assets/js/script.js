@@ -10,12 +10,19 @@ var startBtn = document.querySelector(`#startBtn`);
 
 //global variables
 var questionObj = { //question object that holds all the parts of questions
-    questions: [`click yes`, `click no`, `first answer`, `answers of question 1 and question 2`],
+    questions: [
+        `Inside which HTML element do we put the JavaScript?`, 
+        `What is the correct JavaScript syntax to change the content of the HTML element below? <p id="demo">This is a demonstration.</p>`, 
+        `Where is the correct place to insert a JavaScript?`, 
+        `What is the correct syntax for referring to an external script called "xxx.js"?`,
+        `How do you write "Hello World" in an alert box?`,
+    ],
     answers: [ //answers are in a 2d array because multiple answers for 1 questions
-        [`no`, `no`, `correct:yes`, `no`],
-        [`correct:no`, `yes`, `maybe`, `click this`],
-        [`correct:maybe`, `incorrect`, `yes`, `😀`], //uses `correct:` so that even if answer has the word `correct` its not flagged as correct answer
-        [`no yes`, `correct:yes no`, `wawawewa`, `no no`] //to pull out correct: newStr = substring(7,questionObj.answers[index].length)
+        [`<js>`, `correct:<script>`, `<javascript>`, `<scripting>`],
+        [`document.getElement("p").innerHTML = "Hello World!";`, `#demo.innerHTML = "Hello World!";`, `correct:document.getElementById("demo").innerHTML = "Hello World!";`, `document.getElementByName("p").innerHTML = "Hello World!";`],
+        [`The <head> section`, `Both the <head> section and the <body> section are correct`, `correct:The <body> section`, `The <footer> section`], //uses `correct:` so that even if answer has the word `correct` its not flagged as correct answer
+        [`correct:<script src="xxx.js">`, `<script name="xxx.js">`, `<script href="xxx.js">`, `<script link="xxx.js">`],
+        [`msgBox("Hello World");`, `alertBox("Hello World");`, `correct:alert("Hello World");`, `msg("Hello World");`] //to pull out correct: newStr = substring(7,questionObj.answers[index].length)
     ]
 }
 

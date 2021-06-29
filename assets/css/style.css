@@ -78,7 +78,7 @@ main > ul li {
     margin: 3vh;
     width: max-content;
     min-width: 10vw;
-    padding: 2% 10px 2% 10px;
+    padding: 5px 10px 5px 10px;
     background: var(--btnBackground);
     color: var(--mainTextColor);
     border: 0;
@@ -95,7 +95,9 @@ main > div > * {
     margin: 1rem;
 }
 
-button:hover, /* all buttons have same hover effect so reuse code :) */
+#submit-highscore-div button:hover,
+#display-highscore-div button:hover,
+body button:hover, /* all buttons have same hover effect so reuse code :) */
 main > ul li:hover {
     background: var(--btnBackgroundHover);
     cursor: pointer;
