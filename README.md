@@ -3,7 +3,7 @@
 deployment: https://brandonnorsworthy.github.io/uta-code-quiz/
 
 ## About
-Timed coding quiz with multiple-choice questions. This app will run in the browser and will feature dynamically updated HTML and CSS powered by JavaScript code that you write. It will have a clean, polished, and responsive user interface.
+Timed coding quiz with multiple-choice questions. This app will run in the browser and will feature dynamically updated HTML and CSS powered by JavaScript. It will have a clean, polished, and responsive user interface.
 
 ## Demo
 ![gif of demo](/assets/images/demo_desktop.gif)
