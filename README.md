@@ -8,6 +8,10 @@ Timed coding quiz with multiple-choice questions. This app will run in the brows
 ## Demo
 ![gif of demo](/assets/images/demo_desktop.gif)
 
+## Homework Assignment Given Design
+
+![Given Design](./assets/images/given.gif)
+
 ## Functionality
 - Dynamically creates ```<li>``` tags from a supplied question and answer arrays, assigns ```id="correct"``` to the correct answer for to be read by JavaScript.
 - Question and Answer (2D) Arrays can easily be concatenated to. To mark the correct answer add ```correct:``` to the prefix of the answer string.
